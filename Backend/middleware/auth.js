@@ -4,21 +4,23 @@ const pool = require('../config/database');
 const authMiddleware = async (req, res, next) => {
   try {
     // Get token from header
-    const token = req.header('Authorization')?.replace('Bearer ', '');
-
-    if (!token) {
+    const authHeader = req.headers.authorization;
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ 
         success: false, 
         message: 'No token, authorization denied' 
       });
     }
 
+    const token = authHeader.split(' ')[1];
+
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     // Get user from database
     const [users] = await pool.execute(
-      'SELECT id, employee_id, email, name, role FROM users WHERE id = ?',
+      'SELECT id, employee_id, name, email, role FROM users WHERE id = ?',
       [decoded.userId]
     );
 
@@ -29,11 +31,11 @@ const authMiddleware = async (req, res, next) => {
       });
     }
 
-    // Add user to request object
+    // Add user to request
     req.user = users[0];
     next();
   } catch (error) {
-    console.error('Auth middleware error:', error);
+    console.error('Auth middleware error:', error.message);
     res.status(401).json({ 
       success: false, 
       message: 'Token is not valid' 

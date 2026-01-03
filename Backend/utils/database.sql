@@ -15,11 +15,16 @@ CREATE TABLE IF NOT EXISTS users (
     emergency_contact VARCHAR(100),
     department VARCHAR(100),
     position VARCHAR(100),
-    join_date DATE,
+    join_date DATE DEFAULT CURDATE(),
     profile_picture VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- Insert admin user (password: admin123)
+INSERT INTO users (employee_id, name, email, password, role) 
+VALUES ('ADMIN001', 'System Admin', 'admin@dayflow.com', '$2a$10$YourHashedPasswordHere', 'admin')
+ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 -- Attendance table
 CREATE TABLE IF NOT EXISTS attendance (
@@ -57,7 +62,7 @@ CREATE TABLE IF NOT EXISTS leaves (
 CREATE TABLE IF NOT EXISTS payroll (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
-    month_year VARCHAR(7) NOT NULL, -- Format: YYYY-MM
+    month_year VARCHAR(7) NOT NULL,
     basic_salary DECIMAL(10,2) DEFAULT 0,
     allowances DECIMAL(10,2) DEFAULT 0,
     deductions DECIMAL(10,2) DEFAULT 0,
@@ -70,25 +75,3 @@ CREATE TABLE IF NOT EXISTS payroll (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     UNIQUE KEY unique_user_month (user_id, month_year)
 );
-
--- Documents table (optional)
-CREATE TABLE IF NOT EXISTS documents (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    file_path VARCHAR(255) NOT NULL,
-    file_type VARCHAR(50),
-    file_size BIGINT,
-    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
--- Insert sample admin user (password: admin123)
-INSERT INTO users (employee_id, name, email, password, role) 
-VALUES ('ADMIN001', 'System Admin', 'admin@dayflow.com', '$2a$10$YourHashedPasswordHere', 'admin')
-ON DUPLICATE KEY UPDATE name = VALUES(name);
-
--- Insert sample employee (password: emp123)
-INSERT INTO users (employee_id, name, email, password, role, department, position, join_date) 
-VALUES ('EMP001', 'John Doe', 'john@dayflow.com', '$2a$10$YourHashedPasswordHere', 'employee', 'Engineering', 'Software Engineer', '2023-01-15')
-ON DUPLICATE KEY UPDATE name = VALUES(name);

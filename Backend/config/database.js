@@ -8,17 +8,26 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME || 'dayflow_hrms',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 0
 });
 
-// Test database connection
-pool.getConnection()
-  .then(connection => {
-    console.log('Connected to MySQL database');
+// Test connection
+const testConnection = async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log('✅ Connected to MySQL database');
     connection.release();
-  })
-  .catch(err => {
-    console.error('Error connecting to MySQL:', err);
-  });
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.message);
+    console.log('Please ensure:');
+    console.log('1. XAMPP MySQL is running');
+    console.log('2. Database exists: dayflow_hrms');
+    console.log('3. Username: root, Password: (empty)');
+  }
+};
+
+testConnection();
 
 module.exports = pool;
