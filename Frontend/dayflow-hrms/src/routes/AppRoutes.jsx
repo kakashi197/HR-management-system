@@ -3,6 +3,8 @@ import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import Layout from '../components/Layout';
 import Login from '../features/auth/Login';
+
+
 import Register from '../features/auth/Register';
 import EmployeeDashboard from '../features/dashboard/EmployeeDashboard';
 import AdminDashboard from '../features/dashboard/AdminDashboard';
@@ -12,6 +14,8 @@ import ApplyLeave from '../features/leave/ApplyLeave';
 import LeaveApproval from '../features/leave/LeaveApproval';
 import Payroll from '../features/payroll/Payroll';
 import React from 'react';
+
+
 
 const PrivateRoute = ({ children, allowedRoles }) => {
   const { user, loading } = useContext(AuthContext);
@@ -29,6 +33,7 @@ const PrivateRoute = ({ children, allowedRoles }) => {
       </div>
     );
   }
+
   
   if (!user) {
     return <Navigate to="/login" />;
@@ -40,6 +45,8 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   
   return <Layout>{children}</Layout>;
 };
+
+
 
 const AppRoutes = () => {
   const { user } = useContext(AuthContext);
@@ -79,6 +86,9 @@ const AppRoutes = () => {
           <LeaveApproval />
         </PrivateRoute>
       } />
+
+
+
       
       <Route path="/payroll" element={
         <PrivateRoute>
