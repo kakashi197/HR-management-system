@@ -1,8 +1,8 @@
-import { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
-import React from 'react';
-import api from '../../services/api';
+import { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import React from "react";
+import api from "../../services/api";
 import {
   UserIcon,
   CalendarIcon,
@@ -10,8 +10,8 @@ import {
   CurrencyDollarIcon,
   ClockIcon,
   ChartBarIcon,
-  ArrowTrendingUpIcon
-} from '@heroicons/react/24/outline';
+  ArrowTrendingUpIcon,
+} from "@heroicons/react/24/outline";
 
 const EmployeeDashboard = () => {
   const { user } = useContext(AuthContext);
@@ -19,7 +19,7 @@ const EmployeeDashboard = () => {
     attendance: 0,
     leaveRequests: 0,
     upcomingLeaves: 0,
-    todayStatus: 'Not Marked'
+    todayStatus: "Not Marked",
   });
   const [recentLeaves, setRecentLeaves] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -31,30 +31,55 @@ const EmployeeDashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/dashboard/employee');
+      const response = await api.get("/dashboard/employee");
       setStats(response.data.stats);
       setRecentLeaves(response.data.recentLeaves || []);
     } catch (error) {
-      console.error('Error fetching dashboard:', error);
+      console.error("Error fetching dashboard:", error);
     } finally {
       setLoading(false);
     }
   };
 
   const quickLinks = [
-    { name: 'View Profile', path: '/profile', icon: UserIcon, color: 'from-blue-500 to-cyan-400' },
-    { name: 'Mark Attendance', path: '/attendance', icon: CalendarIcon, color: 'from-emerald-500 to-green-400' },
-    { name: 'Apply Leave', path: '/leave', icon: DocumentTextIcon, color: 'from-amber-500 to-yellow-400' },
-    { name: 'View Salary', path: '/payroll', icon: CurrencyDollarIcon, color: 'from-purple-500 to-pink-400' },
+    {
+      name: "View Profile",
+      path: "/profile",
+      icon: UserIcon,
+      color: "from-blue-500 to-cyan-400",
+    },
+    {
+      name: "Mark Attendance",
+      path: "/attendance",
+      icon: CalendarIcon,
+      color: "from-emerald-500 to-green-400",
+    },
+    {
+      name: "Apply Leave",
+      path: "/leave",
+      icon: DocumentTextIcon,
+      color: "from-amber-500 to-yellow-400",
+    },
+    {
+      name: "View Salary",
+      path: "/payroll",
+      icon: CurrencyDollarIcon,
+      color: "from-purple-500 to-pink-400",
+    },
   ];
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Present': return 'from-emerald-500 to-green-400';
-      case 'Absent': return 'from-rose-500 to-pink-400';
-      case 'Half-day': return 'from-amber-500 to-yellow-400';
-      case 'Leave': return 'from-blue-500 to-cyan-400';
-      default: return 'from-gray-500 to-gray-400';
+      case "Present":
+        return "from-emerald-500 to-green-400";
+      case "Absent":
+        return "from-rose-500 to-pink-400";
+      case "Half-day":
+        return "from-amber-500 to-yellow-400";
+      case "Leave":
+        return "from-blue-500 to-cyan-400";
+      default:
+        return "from-gray-500 to-gray-400";
     }
   };
 
@@ -77,12 +102,21 @@ const EmployeeDashboard = () => {
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="relative">
             <h1 className="text-3xl font-bold text-white">
-              Welcome back, <span className="text-yellow-300">{user?.name}!</span>
+              Welcome back,{" "}
+              <span className="text-yellow-300">{user?.name}!</span>
             </h1>
-            <p className="text-purple-100 mt-2">Here's your overview for today</p>
+            <p className="text-purple-100 mt-2">
+              Here's your overview for today
+            </p>
             <div className="mt-6 flex items-center space-x-3">
               <div className="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full">
-                <span className="text-white text-sm">{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</span>
+                <span className="text-white text-sm">
+                  {new Date().toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
               </div>
               <div className="px-3 py-1.5 bg-white/20 backdrop-blur-sm rounded-full">
                 <span className="text-white text-sm">#{user?.employeeId}</span>
@@ -105,9 +139,15 @@ const EmployeeDashboard = () => {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">{stats.attendance} days</p>
-            <p className="text-sm font-medium text-gray-900 mt-1">Attendance This Month</p>
-            <p className="text-xs text-gray-500 mt-1">Regular attendance days</p>
+            <p className="text-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+              {stats.attendance} days
+            </p>
+            <p className="text-sm font-medium text-gray-900 mt-1">
+              Attendance This Month
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Regular attendance days
+            </p>
           </div>
         </div>
 
@@ -122,8 +162,12 @@ const EmployeeDashboard = () => {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors">{stats.leaveRequests}</p>
-            <p className="text-sm font-medium text-gray-900 mt-1">Pending Leaves</p>
+            <p className="text-2xl font-bold text-gray-900 group-hover:text-amber-600 transition-colors">
+              {stats.leaveRequests}
+            </p>
+            <p className="text-sm font-medium text-gray-900 mt-1">
+              Pending Leaves
+            </p>
             <p className="text-xs text-gray-500 mt-1">Awaiting approval</p>
           </div>
         </div>
@@ -133,14 +177,22 @@ const EmployeeDashboard = () => {
             <div className="p-3 bg-gradient-to-r from-emerald-100 to-green-100 rounded-xl">
               <ClockIcon className="w-6 h-6 text-emerald-600" />
             </div>
-            <div className={`px-2 py-1 rounded-lg bg-gradient-to-r ${getStatusColor(stats.todayStatus)} text-white text-xs font-bold`}>
+            <div
+              className={`px-2 py-1 rounded-lg bg-gradient-to-r ${getStatusColor(stats.todayStatus)} text-white text-xs font-bold`}
+            >
               {stats.todayStatus}
             </div>
           </div>
           <div>
-            <p className="text-xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors capitalize">{stats.todayStatus}</p>
-            <p className="text-sm font-medium text-gray-900 mt-1">Today's Status</p>
-            <p className="text-xs text-gray-500 mt-1">Current attendance status</p>
+            <p className="text-xl font-bold text-gray-900 group-hover:text-emerald-600 transition-colors capitalize">
+              {stats.todayStatus}
+            </p>
+            <p className="text-sm font-medium text-gray-900 mt-1">
+              Today's Status
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              Current attendance status
+            </p>
           </div>
         </div>
 
@@ -155,8 +207,12 @@ const EmployeeDashboard = () => {
             </div>
           </div>
           <div>
-            <p className="text-2xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors">{stats.upcomingLeaves}</p>
-            <p className="text-sm font-medium text-gray-900 mt-1">Upcoming Leaves</p>
+            <p className="text-2xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+              {stats.upcomingLeaves}
+            </p>
+            <p className="text-sm font-medium text-gray-900 mt-1">
+              Upcoming Leaves
+            </p>
             <p className="text-xs text-gray-500 mt-1">Scheduled leaves</p>
           </div>
         </div>
@@ -173,8 +229,12 @@ const EmployeeDashboard = () => {
                   <ChartBarIcon className="w-5 h-5 text-indigo-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-gray-900">Quick Access</h2>
-                  <p className="text-sm text-gray-600">Frequently used actions</p>
+                  <h2 className="text-lg font-bold text-gray-900">
+                    Quick Access
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    Frequently used actions
+                  </p>
                 </div>
               </div>
             </div>
@@ -186,10 +246,14 @@ const EmployeeDashboard = () => {
                     to={link.path}
                     className="group flex flex-col items-center p-4 bg-gradient-to-br from-white to-gray-50 rounded-xl border border-gray-200/50 hover:border-indigo-200/50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                   >
-                    <div className={`p-3 rounded-lg bg-gradient-to-r ${link.color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
+                    <div
+                      className={`p-3 rounded-lg bg-gradient-to-r ${link.color} mb-3 group-hover:scale-110 transition-transform duration-300`}
+                    >
                       <link.icon className="w-6 h-6 text-white" />
                     </div>
-                    <span className="font-medium text-gray-900 text-sm text-center">{link.name}</span>
+                    <span className="font-medium text-gray-900 text-sm text-center">
+                      {link.name}
+                    </span>
                   </Link>
                 ))}
               </div>
@@ -199,7 +263,9 @@ const EmployeeDashboard = () => {
 
         {/* Today's Summary */}
         <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-2xl shadow-purple-200/30 border border-indigo-100/50 p-6">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Today's Summary</h3>
+          <h3 className="text-lg font-bold text-gray-900 mb-4">
+            Today's Summary
+          </h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
@@ -241,6 +307,103 @@ const EmployeeDashboard = () => {
         </div>
       </div>
 
+      {/* Leave Status Section */}
+      <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-2xl shadow-gray-200/50 border border-gray-200/50 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 bg-gradient-to-r from-amber-100 to-yellow-100 rounded-lg">
+              <DocumentTextIcon className="w-5 h-5 text-amber-600" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-gray-900">Leave Status</h2>
+              <p className="text-sm text-gray-500">Recent leave applications</p>
+            </div>
+          </div>
+          <Link
+            to="/leave"
+            className="text-sm font-medium text-indigo-600 hover:text-indigo-700 flex items-center space-x-1"
+          >
+            <span>View All</span>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </div>
+
+        {recentLeaves && recentLeaves.length > 0 ? (
+          <div className="space-y-4">
+            {recentLeaves.map((leave) => (
+              <div
+                key={leave.id}
+                className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+              >
+                <div className="flex items-center space-x-3">
+                  <div
+                    className={`p-2 rounded-lg ${
+                      leave.type === "Paid"
+                        ? "bg-blue-100"
+                        : leave.type === "Sick"
+                          ? "bg-emerald-100"
+                          : "bg-gray-100"
+                    }`}
+                  >
+                    <DocumentTextIcon
+                      className={`w-4 h-4 ${
+                        leave.type === "Paid"
+                          ? "text-blue-600"
+                          : leave.type === "Sick"
+                            ? "text-emerald-600"
+                            : "text-gray-600"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      {leave.type} Leave
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {new Date(leave.start_date).toLocaleDateString()} -{" "}
+                      {new Date(leave.end_date).toLocaleDateString()}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className={`px-3 py-1 text-xs font-bold rounded-full ${
+                    leave.status === "Approved"
+                      ? "bg-emerald-500 text-white"
+                      : leave.status === "Rejected"
+                        ? "bg-rose-500 text-white"
+                        : "bg-amber-500 text-white"
+                  }`}
+                >
+                  {leave.status}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No recent leave applications</p>
+            <Link
+              to="/leave"
+              className="mt-2 inline-block text-sm text-indigo-600 hover:text-indigo-700"
+            >
+              Apply for leave
+            </Link>
+          </div>
+        )}
+      </div>
+
       {/* Recent Leaves */}
       {recentLeaves.length > 0 && (
         <div className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-2xl shadow-gray-200/50 border border-gray-200/50 overflow-hidden">
@@ -251,17 +414,31 @@ const EmployeeDashboard = () => {
                   <DocumentTextIcon className="w-5 h-5 text-amber-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-gray-900">Recent Leave Applications</h2>
-                  <p className="text-sm text-gray-600">Your recent leave requests</p>
+                  <h2 className="text-lg font-bold text-gray-900">
+                    Recent Leave Applications
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    Your recent leave requests
+                  </p>
                 </div>
               </div>
-              <Link 
-                to="/leave" 
+              <Link
+                to="/leave"
                 className="text-sm font-medium text-indigo-600 hover:text-indigo-700 flex items-center space-x-1"
               >
                 <span>View All</span>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
             </div>
@@ -287,28 +464,40 @@ const EmployeeDashboard = () => {
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {recentLeaves.map((leave) => (
-                    <tr key={leave.id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={leave.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-4 py-4 whitespace-nowrap">
-                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${
-                          leave.type === 'Paid' ? 'bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700' :
-                          leave.type === 'Sick' ? 'bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700' :
-                          'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700'
-                        }`}>
+                        <span
+                          className={`px-3 py-1 text-xs font-bold rounded-full ${
+                            leave.type === "Paid"
+                              ? "bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-700"
+                              : leave.type === "Sick"
+                                ? "bg-gradient-to-r from-emerald-100 to-green-100 text-emerald-700"
+                                : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700"
+                          }`}
+                        >
                           {leave.type}
                         </span>
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {new Date(leave.start_date).toLocaleDateString()} - {new Date(leave.end_date).toLocaleDateString()}
+                        {new Date(leave.start_date).toLocaleDateString()} -{" "}
+                        {new Date(leave.end_date).toLocaleDateString()}
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                         {leave.days} days
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap">
-                        <span className={`px-3 py-1 text-xs font-bold rounded-full ${
-                          leave.status === 'Approved' ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white' :
-                          leave.status === 'Rejected' ? 'bg-gradient-to-r from-rose-500 to-pink-400 text-white' :
-                          'bg-gradient-to-r from-amber-500 to-yellow-400 text-white'
-                        }`}>
+                        <span
+                          className={`px-3 py-1 text-xs font-bold rounded-full ${
+                            leave.status === "Approved"
+                              ? "bg-gradient-to-r from-emerald-500 to-green-400 text-white"
+                              : leave.status === "Rejected"
+                                ? "bg-gradient-to-r from-rose-500 to-pink-400 text-white"
+                                : "bg-gradient-to-r from-amber-500 to-yellow-400 text-white"
+                          }`}
+                        >
                           {leave.status}
                         </span>
                       </td>
